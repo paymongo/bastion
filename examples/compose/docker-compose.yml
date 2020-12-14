@@ -4,19 +4,18 @@ volumes:
   etc:
 services:
   bastion:
-    image: cloudposse/bastion
+    image: 001299781416.dkr.ecr.ap-southeast-1.amazonaws.com/bastion
+    mem_limit: "512000000"
     ports:
-      - "1234:22"
+      - "22:22"
     env_file:
       - bastion.env
     volumes:
       - home:/home
       - etc:/etc
-      - "./scripts/ssh-authorized-keys-command:/etc/init.d/ssh-authorized-keys-command"
-      - "./scripts/ssh-api-url:/etc/init.d/ssh-api-url"
-      - "./scripts/ssh-log-level:/etc/init.d/ssh-log-level"
   gak:
     image: cloudposse/github-authorized-keys
+    mem_limit: "128000000"
     ports:
       - "301:301"
     volumes:
@@ -29,6 +28,7 @@ services:
     restart: always
   etcd:
     image: quay.io/coreos/etcd:v2.3.7
+    mem_limit: "128000000"
     command:
       - "--advertise-client-urls=http://0.0.0.0:2379,http://0.0.0.0:4001"
       - "--listen-client-urls=http://0.0.0.0:2379,http://0.0.0.0:4001"

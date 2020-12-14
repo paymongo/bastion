@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ -n "$1" ]; then
+  public_ip=$(aws ec2 --region=ap-southeast-1 --output text --query Reservations[0].Instances[0].PrivateIpAddress describe-instances --filters Name=tag:elasticbeanstalk:environment-name,Values=$1 Name=instance-state-name,Values=running)
+  ssh_command="ssh -i /pem/staging.pem ec2-user@$public_ip"
+  echo $ssh_command
+  $ssh_command
+else
+  echo "Usage: $0 [eb environment name]"
+  echo "Example: $0 core-staging-api"
+fi

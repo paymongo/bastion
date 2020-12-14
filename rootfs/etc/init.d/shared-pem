@@ -1,0 +1,8 @@
+#!/bin/bash
+
+DIR="/pem"
+
+groupadd jumpers
+chgrp -R jumpers $DIR
+chmod 2655 $DIR
+chmod 2444 $DIR/*

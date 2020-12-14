@@ -148,6 +148,16 @@ ENV SSH_AUDIT_ENABLED="true" \
     SSH_AUTHORIZED_KEYS_COMMAND="none" \
     SSH_AUTHORIZED_KEYS_COMMAND_USER="nobody"
 
+RUN apk update && apk add \
+	ca-certificates \
+	groff \
+	less \
+	python \
+	py-pip \
+	&& rm -rf /var/cache/apk/* \
+  && pip install pip --upgrade \
+  && pip install awscli
+
 ADD rootfs/ /
 
 EXPOSE 22

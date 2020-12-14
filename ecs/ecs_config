@@ -1,0 +1,3 @@
+#!/bin/bash
+echo ECS_RESERVED_PORTS=[2375, 2376, 51678, 51679] >> /etc/ecs/ecs.config
+systemctl stop sshd.service
