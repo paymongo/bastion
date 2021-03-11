@@ -1,6 +1,8 @@
 ##
 ## Base builder image
 ##
+FROM cloudposse/github-authorized-keys as builder-gak
+
 FROM alpine:3.8 as builder
 
 RUN apk --update add --virtual .build-deps build-base automake autoconf libtool git linux-pam-dev openssl-dev wget
@@ -154,11 +156,16 @@ RUN apk update && apk add \
 	less \
 	python \
 	py-pip \
+    supervisor \
 	&& rm -rf /var/cache/apk/* \
   && pip install pip --upgrade \
   && pip install awscli
 
 ADD rootfs/ /
+
+COPY --from=builder-gak /usr/bin/github-authorized-keys /usr/bin/gak
+COPY --from=builder-gak /lib /lib
+COPY --from=builder-gak /lib64 /lib64
 
 EXPOSE 22
 ENTRYPOINT ["/init"]

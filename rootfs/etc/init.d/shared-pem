@@ -2,7 +2,7 @@
 
 DIR="/pem"
 
-groupadd jumpers
+mkdir $DIR
+groupadd -g 1000 jumpers
 chgrp -R jumpers $DIR
 chmod 2655 $DIR
-chmod 2444 $DIR/*

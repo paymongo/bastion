@@ -1,32 +1,19 @@
 version: "2"
 volumes:
   home:
-  etc:
 services:
   bastion:
-    image: 001299781416.dkr.ecr.ap-southeast-1.amazonaws.com/bastion
+    container_name: bastion
+    image: bastion:v0.2.0
     mem_limit: "512000000"
     ports:
-      - "22:22"
+      - "1234:22"
     env_file:
       - bastion.env
     volumes:
       - home:/home
-      - etc:/etc
-  gak:
-    image: cloudposse/github-authorized-keys
-    mem_limit: "128000000"
-    ports:
-      - "301:301"
-    volumes:
-      - home:/home
-      - etc:/etc
-    env_file:
-      - gak.env
-    links:
-      - "etcd:etcd"
-    restart: always
   etcd:
+    container_name: etcd
     image: quay.io/coreos/etcd:v2.3.7
     mem_limit: "128000000"
     command:

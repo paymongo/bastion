@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# propagate AWS environment variables from pid 1 to all procesess
+# @see https://forums.aws.amazon.com/thread.jspa?threadID=273767#898645
+strings /proc/1/environ | grep AWS >> /etc/environment
+
+# remove default supervisord init
+rm -rf /etc/init.d/supervisord
+
+# execute inits
 for script in /etc/init.d/* ; do
   if [ -r $script ] && [ -x $script ]; then
     echo "Initializing $(basename ${script})"
@@ -11,4 +19,4 @@ for script in /etc/init.d/* ; do
   fi
 done
 
-exec /usr/sbin/sshd -D -e
+exec /usr/bin/supervisord -c /etc/supervisord.conf
